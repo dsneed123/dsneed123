@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7C3AED,50:6366F1,100:0EA5E9&height=180&section=header&text=Davis%20Sneed&fontSize=54&fontColor=ffffff&animation=fadeIn&fontAlignY=34&desc=AI%20%26%20Full-Stack%20Engineer%20%C2%B7%20Agentic%20Systems&descAlignY=54&descSize=18" width="100%" alt="Davis Sneed" />
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:7C3AED,50:6366F1,100:0EA5E9&height=170&section=header&text=Davis%20Sneed&fontSize=52&fontColor=ffffff&fontAlignY=42&desc=AI%20%26%20Full-Stack%20Engineer%20%C2%B7%20Agentic%20Systems&descAlignY=62&descSize=18" width="100%" alt="Davis Sneed — AI & Full-Stack Engineer" />
 
 <a href="https://www.dsneedy.com">
   <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&pause=1200&color=7C3AED&center=true&vCenter=true&width=620&lines=Agents+that+plan%2C+act%2C+and+improve+themselves.;Self-improving+agent+workflows+%C2%B7+cyclic+graphs;Autopilot+%C2%B7+local-first+LLMs+%C2%B7+model+agnostic;React+%2B+FastAPI+%2B+Postgres%2C+end+to+end.;Open+to+AI+%26+Full-Stack+roles+%E2%80%94+Seattle+or+remote." alt="Typing intro" />
@@ -292,6 +292,6 @@ Concentrations in **Cyber Security**, **Software Development**, and **Philosophy
 <a href="https://www.linkedin.com/in/dsneedy"><img src="https://img.shields.io/badge/linkedin.com/in/dsneedy-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
 <a href="https://www.dsneedy.com"><img src="https://img.shields.io/badge/dsneedy.com-7C3AED?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0EA5E9,50:6366F1,100:7C3AED&height=110&section=footer" width="100%" alt="" />
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:0EA5E9,50:6366F1,100:7C3AED&height=80&section=footer" width="100%" alt="" />
 
 </div>
