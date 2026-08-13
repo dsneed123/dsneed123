@@ -248,10 +248,20 @@ Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint.
   <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=dsneed123&theme=github" height="200" alt="Most committed languages" />
 </picture>
 
-<img src="https://streak-stats.demolab.com?user=dsneed123&hide_border=true&background=00000000&stroke=8B8B8B&ring=7C3AED&fire=7C3AED&currStreakLabel=7C3AED&sideLabels=8B8B8B&currStreakNum=8B8B8B&sideNums=8B8B8B&dates=8B8B8B" height="180" alt="Contribution streak" />
+</div>
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=dsneed123&bg_color=00000000&color=7C3AED&line=7C3AED&point=0EA5E9&area=true&hide_border=true" width="98%" alt="Contribution graph" />
+### 📈 Contributions per year
 
+<div align="center">
+
+<img src="https://img.shields.io/badge/Total%20contributions-3,943-7C3AED?style=for-the-badge" alt="Total contributions">
+<img src="https://img.shields.io/badge/Average%20per%20year-789-0EA5E9?style=for-the-badge" alt="Average per year">
+<img src="https://img.shields.io/badge/2026%20pace-~4,800%2Fyr-16A34A?style=for-the-badge" alt="2026 pace">
+
+</div>
+
+<div align="center">
+<sub>Averaged across 2022–2026 · 2026 is year to date, running at roughly <b>4,800/yr</b></sub>
 </div>
 
 ---
