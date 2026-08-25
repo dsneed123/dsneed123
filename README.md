@@ -7,7 +7,7 @@
 **Seattle, WA**
 
 <a href="https://www.dsneedy.com">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=21&pause=1200&color=7C3AED&center=true&vCenter=true&width=850&height=45&lines=Agents+that+plan%2C+act%2C+and+improve+themselves.;Self-improving+agent+workflows+%C2%B7+cyclic+graphs;Autopilot+%C2%B7+local-first+LLMs+%C2%B7+model+agnostic;React+%2B+FastAPI+%2B+Postgres%2C+end+to+end.;Open+to+AI+%26+Full-Stack+roles+%E2%80%94+Seattle+or+remote." alt="Agents that plan, act, and improve themselves" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=21&pause=1200&color=7C3AED&center=true&vCenter=true&width=850&height=45&lines=Agents+that+plan%2C+act%2C+and+improve+themselves.;AWO+%C2%B7+self-improving+workflows+on+cyclic+graphs;Polling+agents+%C2%B7+autopilot+%C2%B7+local-first+LLMs;React+%2B+FastAPI+%2B+Postgres%2C+end+to+end.;Open+to+AI+%26+Full-Stack+roles+%E2%80%94+Seattle+or+remote." alt="Agents that plan, act, and improve themselves" />
 </a>
 
 <br/>
@@ -27,7 +27,7 @@
 
 **AI and software engineer with 2+ years of professional experience** building agentic systems, full-stack applications, and AI infrastructure.
 
-I work across the whole stack — React/Next.js front ends, Python services behind them, and the LLM orchestration, data pipelines, and evaluation in between. I currently work in **data operations for Amazon Personal Robotics**, running QA and validation on the operational data that feeds machine learning pipelines. Outside of that I co-founded **Relay** — a visual agent workflow builder with self-improving cyclic execution graphs.
+I work across the whole stack — React/Next.js front ends, Python services behind them, and the LLM orchestration, data pipelines, and evaluation in between. I currently work in **data operations for Amazon Personal Robotics**, running QA and validation on the operational data that feeds machine learning pipelines. Outside of that I co-founded **AWO** (*Agentic Workflow Orchestrator*) — a visual agent workflow builder with self-improving cyclic execution graphs and always-on polling agents.
 
 <table>
 <tr>
@@ -54,14 +54,14 @@ Cyber Security concentration · cryptography · network analysis · secure by de
 
 ---
 
-## 🚀 Relay — Agent Workflow Builder · *Co-founder*
+## 🚀 AWO — Agentic Workflow Orchestrator · *Co-founder*
 <sub>🔒 Private repository — walkthrough and demo available on request</sub>
 
-> A visual builder for **self-improving agent workflows**. You compose agents on a graph canvas and Relay executes it — **cyclic graphs**, not just DAGs, so workflows can loop back on themselves, evaluate their own output, and re-run until the result clears the bar. Branching, parallel execution, and an **autopilot mode** where agents plan, execute, critique, and commit multi-step software tasks with no human in the loop.
+> **AWO** is a visual builder and runtime for **self-improving agent workflows**. You compose agents on a graph canvas and AWO executes the graph — **cyclic graphs**, not just DAGs, so a workflow can loop back on itself, evaluate its own output, and re-run until the result clears the bar. Branching, parallel fan-out, long-lived **polling agents** that watch the outside world, and an **autopilot mode** where agents plan, execute, critique, and commit multi-step software tasks with no human in the loop.
 
 ```mermaid
 flowchart LR
-    T["⚡ Triggers<br/>push · poll-diff · schedule"] --> B["🎛️ Workflow Builder<br/>visual graph canvas"]
+    T["⚡ Triggers<br/>push · poll-diff · schedule · webhook · manual"] --> B["🎛️ Workflow Builder<br/>visual graph canvas"]
     B --> E["🔁 Cyclic Execution Engine<br/>loops · branching · parallel"]
 
     E --> P["Plan"]
@@ -80,21 +80,86 @@ flowchart LR
     style S fill:#16A34A,stroke:#15803D,color:#fff
 ```
 
+### What it actually does
+
+<details open>
+<summary><b>📡 Polling agents</b> — agents that watch instead of wait</summary>
+
+<br/>
+
+Most agent frameworks only run when you push a button. AWO's polling agents are **long-lived workers on a schedule** — they wake on an interval, look at a source, diff it against the last state they saw, and only spend tokens when something actually changed.
+
+- **Poll-diff triggers** — an agent watches a repo, branch, endpoint, feed, table, or file and fires the workflow only on a real delta, so idle cycles cost nothing
+- **Interval + cron scheduling** — per-agent cadence, from seconds-level polling to nightly sweeps, backed by a Redis-driven queue with **backoff on quiet sources** and jitter so pollers don't stampede
+- **Cursor / watermark state in Postgres** — each poller remembers where it left off, so restarts resume instead of replaying, and the same change never triggers twice
+- **Debounce and coalesce** — a burst of ten commits in a minute becomes one run against the final state, not ten competing runs
+- **Fan-out on wake** — one poller can hand its delta to many downstream agents in parallel (review, test, doc, notify) as a single run
+
+</details>
+
+<details>
+<summary><b>🔁 Cyclic execution engine</b> — loops are first-class</summary>
+
+<br/>
+
+- **Real cycles, not retries bolted on** — an edge can point backwards; the engine tracks visit counts, iteration budgets, and convergence conditions per loop
+- **Plan → Execute → Evaluate → (loop or commit)** — the evaluator node scores its own output against the workflow's bar and decides whether to ship or send it back around with the critique attached
+- **Guardrails** — max-iteration caps, wall-clock and token budgets, and stall detection so a workflow that stops improving exits instead of spinning
+- **Conditional branching** — route on evaluator scores, tool results, or arbitrary predicates over run state
+- **Parallel execution** — independent branches run concurrently and rejoin at a barrier node, with per-branch failure isolation
+
+</details>
+
+<details>
+<summary><b>🤖 Autopilot</b> — multi-step software work, no human in the loop</summary>
+
+<br/>
+
+- Takes a task, **plans** the change set, **executes** against a real repo in an isolated workspace, **critiques** the diff, and iterates until it passes
+- Runs tests and linters as evaluation signal — the loop is gated on real feedback, not the model's self-report
+- Ends at a **commit or PR** with the run's reasoning trail attached
+
+</details>
+
+<details>
+<summary><b>🎛️ Visual workflow builder</b> — compose instead of hand-wiring</summary>
+
+<br/>
+
+- **React Flow canvas** — drag agents, tools, evaluators, branches, and loop-backs onto a graph instead of writing orchestration glue
+- **Typed ports and state passing** — outputs flow along edges as structured artifacts, so downstream agents get data rather than re-parsed prose
+- **Live run view** — watch nodes light up as they execute, with per-node inputs, outputs, token spend, and latency
+- **Run history and replay** — every execution is persisted, inspectable, and re-runnable from any node
+
+</details>
+
+<details>
+<summary><b>🔌 Connector layer & model routing</b> — model-agnostic by design</summary>
+
+<br/>
+
+- **Local-first inference** on Grace Blackwell hardware, or any **OpenAI/Anthropic-compatible** endpoint — swappable per node
+- **Per-node model routing** — cheap fast models for classification and polling triage, frontier models for planning and critique
+- **Token optimization** — context trimming, artifact reuse across loop iterations, and caching so a self-improving cycle doesn't re-pay for the same context every pass
+- **Tool use** — shell, HTTP, filesystem, and database tools exposed to agents with per-node scoping
+
+</details>
+
 <table>
 <tr><td width="33%" valign="top">
+
+**📡 Polling agents**
+Long-lived watchers that wake on a schedule, diff against last-seen state, and only fire on real change.
+
+</td><td width="33%" valign="top">
 
 **🔁 Self-improvement loops**
 Agents evaluate their own output and iterate — cycles are first-class, not an escape hatch.
 
 </td><td width="33%" valign="top">
 
-**🎛️ Visual workflow builder**
-Compose, branch, and parallelize agent graphs on a canvas instead of hand-wiring scripts.
-
-</td><td width="33%" valign="top">
-
 **🔌 Model-agnostic**
-Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint.
+Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint, routed per node.
 
 </td></tr>
 </table>
@@ -107,7 +172,7 @@ Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint.
 <img src="https://img.shields.io/badge/React%20Flow-FF0072?style=flat-square&logo=react&logoColor=white">
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white">
 
-<a href="mailto:dlsneed1298@gmail.com?subject=Relay%20demo"><img src="https://img.shields.io/badge/Request%20a%20Relay%20demo-→-7C3AED?style=for-the-badge&logo=maildotru&logoColor=white" alt="Request a Relay demo"></a>
+<a href="mailto:dlsneed1298@gmail.com?subject=AWO%20demo"><img src="https://img.shields.io/badge/Request%20an%20AWO%20demo-→-7C3AED?style=for-the-badge&logo=maildotru&logoColor=white" alt="Request an AWO demo"></a>
 
 </div>
 
@@ -166,8 +231,6 @@ Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint.
 
 | Project | What it is | Stack |
 |:---|:---|:---|
-| Project | What it is | Stack |
-|:---|:---|:---|
 | 🤖 **[TARS](https://github.com/dsneed123/TARS)** | Autonomous coding agent — *Task Automation & Repository Steward*. Plans, writes, and ships code end to end against real repos. | `Python` `Claude API` |
 | 🐘 **[elephant-dashboard](https://github.com/dsneed123/elephant-dashboard)** | Real-time trading dashboard — stocks, crypto, and Kalshi signals with live charts, targets, and stop-losses. | `TypeScript` `Python` |
 | 🏃 **[athlete-vision](https://github.com/dsneed123/athlete-vision)** | 40-yard-dash biomechanical analysis: pose estimation, stride metrics, movement-optimization datasets. | `Python` `CV/ML` |
@@ -196,7 +259,7 @@ Local inference on Grace Blackwell or any OpenAI/Anthropic-compatible endpoint.
 
 | Project | What it is | Stack |
 |:---|:---|:---|
-| **Relay** | Agent workflow builder — self-improving cyclic execution graphs and autopilot *(see above)*. | `FastAPI` `Postgres` `Redis` `React Flow` |
+| **AWO** | *Agentic Workflow Orchestrator* — polling agents, self-improving cyclic execution graphs, and autopilot *(see above)*. | `FastAPI` `Postgres` `Redis` `React Flow` |
 | **stock-signal-scanner** | Self-hosted scanner: ingests financial news, runs a local LLM analysis engine, surfaces per-ticker signal cards. | `Go` `Python` `Docker` |
 | **TARS-Lite** | TARS running fully local on Ollama — no cloud, no API keys. | `Python` `Ollama` |
 | **crypto-trading-bot** | Autonomous crypto trading bot with a GUI dashboard and no external API-key dependency. | `Python` `Docker` |
@@ -281,7 +344,7 @@ Concentrations in **Cyber Security**, **Software Development**, and **Philosophy
 
 ## 📬 Currently
 
-- 🔭 Building **Relay** — self-improving agent workflows with real autopilot — and **TARS**, an agent that takes a task and ships the PR
+- 🔭 Building **AWO** — polling agents and self-improving agent workflows with real autopilot — and **TARS**, an agent that takes a task and ships the PR
 - 🌱 Going deeper on agent evaluation, model routing, and local-first inference
 - 💬 Ask me about agentic workflows, LLM tool use, ML data pipelines, or application security
 - ⚡ Fun fact: most of my side projects were built *by* agents I wrote
